@@ -1,24 +1,26 @@
 function firstNonRepeatedChar(str) {
  // Write your code here
-	/ Iterate through each character of the string with an outer loop.
-  for (let i = 0; i < str.length; i++) {
-    let char = str[i];
-    let isRepeated = false;
+	 // Create a map to store the frequency of each character.
+  const charCounts = new Map();
 
-    // Use an inner loop to check if this character is repeated elsewhere.
-    for (let j = 0; j < str.length; j++) {
-      // We only care about finding the same character at a *different* index.
-      if (i !== j && str[j] === char) {
-        isRepeated = true;
-        // As soon as we find one repeat, we can stop checking for this character.
-        break;
-      }
-    }
+  // First, iterate through the string to count the occurrences of each character.
+  for (const char of str) {
+    // If the character is already in the map, increment its count. Otherwise, add it with a count of 1.
+    charCounts.set(char, (charCounts.get(char) || 0) + 1);
+  }
 
-    // If the inner loop finished without finding any repeats, this is our answer.
-    if (!isRepeated) {
+  // Next, iterate through the string again, in order, to find the first character
+  // with a count of exactly 1.
+  for (const char of str) {
+    if (charCounts.get(char) === 1) {
+      // This is the first character that only appeared once.
       return char;
     }
+  }
+
+  // If the loop finishes and no character with a count of 1 was found,
+  // it means all characters are repeated or the string is empty.
+  return null;
   }
 
   // If the outer loop completes, no non-repeated character was found.
